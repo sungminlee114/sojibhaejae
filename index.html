@@ -61,13 +61,13 @@
         
                 // Check for meal times
                 if ((hour === 11 || hour === 12)) {
-                    if (mealTimeWork11to1 <=60) {
+                    if (mealTimeWork11to1 <60) {
                         mealTimeWork11to1++;
                     } else {
                         breakMinutes++;
                     }
                 } else if ((hour === 18 || hour === 19)) {
-                    if (mealTimeWork6to8 <= 60) {
+                    if (mealTimeWork6to8 < 60) {
                         mealTimeWork6to8++;
                     } else {
                         breakMinutes++;
@@ -86,6 +86,8 @@
             if (breakMinutes < 30){
                 breakMinutes = 30;
             }
+            breakMinutes = Math.min(breakMinutes, totalMinutes);
+            
             workMinutes = totalMinutes - breakMinutes;
 
             if (workMinutes > 12*60){
