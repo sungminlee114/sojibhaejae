@@ -43,9 +43,13 @@
                 alert("잘못된 시간 범위입니다. 6:00 AM부터 12:00 AM 사이의 시간을 입력하세요.");
                 return;
             }
-        
+
+            start.setMinutes(start.getMinutes() + 1);
+            end.setMinutes(end.getMinutes() - 1);
+
             // Convert hours to a continuous minute scale from 6:00 AM to midnight
             let current = new Date(start);
+            
         
             // Track work during meal times
             let mealTimeWork11to1 = 0;  // Work minutes between 11 AM and 1 PM
