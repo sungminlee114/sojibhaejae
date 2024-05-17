@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전문연 유연근무 시간계산기</title>
+</head>
+<body>
+    <h1>전문연 유연근무 시간계산기</h1>
+    <form id="timeForm">
+        <label for="startTime">출근시간 (e.g., 6:00 AM):</label>
+        <input type="time" id="startTime" required min="06:00" max="23:59">
+        <br><br>
+        <label for="endTime">퇴근시간 (e.g., 8:00 PM):</label>
+        <input type="time" id="endTime" required min="06:01" max="24:00">
+        <br><br>
+        <button type="button" onclick="calculateWorkHours()" accesskey="enter">Calculate</button>
+    </form>
+    <h2>시간합계: <span id="totalOnHours">0시간 0분</span></h2>
+    <h2>근무시간: <span id="workHours">0시간 0분</span></h2>
+    <h2>휴식시간: <span id="breakHours">0시간 0분</span></h2>
+    <h2>초과근무: <span id="overHours">0시간 0분</span></h2>
+
+    <script>
+        
+
+
+        function calculateWorkHours() {
+            const startTime = document.getElementById("startTime").value;
+            const endTime = document.getElementById("endTime").value;
+        
+            const start = new Date(`01/01/2020 ${startTime}`);
+            const end = new Date(`01/01/2020 ${endTime}`);
+            
+            if (endTime === "00:00") {
+                end.setDate(end.getDate() + 1);
+            }
+            console.log(`Start time: ${start}, End time: ${end}`);
+        
+            // Validate times (6:00 AM to 12:00 AM)
+            if (start >= end|| !(start >= new Date("01/01/2020 06:00") && start <= new Date("01/01/2020 23:59")) || !(end >= new Date("01/01/2020 06:01") && end <= new Date("01/02/2020 0:00"))) {
+                console.log(`Invalid time range: ${start} to ${end}`);
+                alert("잘못된 시간 범위입니다. 6:00 AM부터 12:00 AM 사이의 시간을 입력하세요.");
+                return;
+            }
+        
+            // Convert hours to a continuous minute scale from 6:00 AM to midnight
+            let current = new Date(start);
+        
+            // Track work during meal times
+            let mealTimeWork11to1 = 0;  // Work minutes between 11 AM and 1 PM
+            let mealTimeWork5to7 = 0;   // Work minutes between 5 PM and 7 PM
+            let totalMinutes = 0;
+            let breakMinutes = 0;
+            let overMinutes = 0;
+        
+            while (current < end) {
+                let hour = current.getHours();
+                let isWorkTime = true;
+                totalMinutes++;
+        
+                // Check for meal times
+                if ((hour === 11 || hour === 12)) {
+                    if (mealTimeWork11to1 < 60) {
+                        mealTimeWork11to1++;
+                    } else {
+                        breakMinutes++;
+                    }
+                } else if ((hour === 17 || hour === 18)) {
+                    if (mealTimeWork5to7 < 60) {
+                        mealTimeWork5to7++;
+                    } else {
+                        breakMinutes++;
+                    }
+                } else {
+                    isWorkTime = (hour < 11 || (hour >= 13 && hour < 17) || hour >= 19);
+                    if (!isWorkTime) {
+                        breakMinutes++;
+                    }
+                }
+        
+                // Increment by 1 minute
+                current.setMinutes(current.getMinutes() + 1);
+            }
+        
+            if (breakMinutes < 30){
+                breakMinutes = 30;
+            }
+            workMinutes = totalMinutes - breakMinutes;
+
+            if (workMinutes > 12*60){
+                overMinutes = workMinutes - 12*60;
+                workMinutes = 12*60;
+            }
+
+            console.log(`Total minutes: ${totalMinutes}`);
+            // Update the UI
+            document.getElementById("totalOnHours").textContent = `${Math.floor((totalMinutes / 60))} 시간 ${((totalMinutes % 60))} 분`;
+            document.getElementById("workHours").textContent = `${Math.floor((workMinutes / 60))} 시간 ${((workMinutes % 60))} 분`;
+            document.getElementById("breakHours").textContent = `${Math.floor((breakMinutes / 60))} 시간 ${((breakMinutes % 60))} 분`;
+            document.getElementById("overHours").textContent = `${Math.floor((overMinutes / 60))} 시간 ${((overMinutes % 60))} 분`;
+        }
+
+
+    </script>
+</body>
+</html>
