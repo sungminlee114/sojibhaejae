@@ -23,7 +23,12 @@
 
     <script>
         
-
+        // Set the input of endtime to now
+        const now = new Date();
+        const nowHour = now.getHours();
+        const nowMinute = now.getMinutes();
+        const nowString = `${nowHour < 10 ? "0" : ""}${nowHour}:${nowMinute < 10 ? "0" : ""}${nowMinute}`;
+        document.getElementById("endTime").value = nowString;
 
         function calculateWorkHours() {
             const startTime = document.getElementById("startTime").value;
