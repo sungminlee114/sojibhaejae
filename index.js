@@ -227,18 +227,28 @@ function checkTimeinput() {
             end.setDate(end.getDate() + 1);
         }
 
-        const isInvalidRange = start >= end || 
-                               !(start >= new Date("01/01/2020 06:00") && start <= new Date("01/01/2020 23:59")) || 
-                               !(end >= new Date("01/01/2020 06:01") && end <= new Date("01/02/2020 0:00"));
+        const validCond1 = start <= end;
+        const validCond2 = start >= new Date("01/01/2020 06:00") && start <= new Date("01/01/2020 23:59");
+        const validCond3 = end >= new Date("01/01/2020 06:01") && end <= new Date("01/02/2020 0:00");
+
+        const isInvalidRange = !validCond1 || !validCond2 || !validCond3;
+
+        // const isInvalidRange = start >= end || 
+        //                        !(start >= new Date("01/01/2020 06:00") && start <= new Date("01/01/2020 23:59")) || 
+        //                        !(end >= new Date("01/01/2020 06:01") && end <= new Date("01/02/2020 0:00"));
 
         calculateBtn.disabled = isInvalidRange;
-
-
-        if (isInvalidRange) {
-            calculateHint.textContent = "유효하지 않은 시간 범위입니다. 출근 시간은 06:00에서 23:59 사이, 퇴근 시간은 06:01에서 24:00 사이여야 합니다.";
+        
+        if (!validCond1) {
+            calculateHint.textContent = "시작 시간이 종료 시간보다 늦거나 같습니다.";
+        } else if(!validCond2) {
+            calculateHint.textContent = "출근 시간은 06:00에서 23:59 사이여야 합니다.";
+        } else if(!validCond3) {
+            calculateHint.textContent = "퇴근 시간은 06:01에서 24:00 사이여야 합니다.";
         } else {
             calculateHint.textContent = "";
         }
+        
     } else {
         calculateBtn.disabled = true;
         calculateHint.textContent = "출근 시간과 퇴근 시간을 모두 입력해주세요.";
