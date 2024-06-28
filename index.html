@@ -4,25 +4,231 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연세대 전문연 유연근무 시간계산기</title>
+    <style>
+        :root {
+            --primary-color: #002C9E;
+            --primary-color-light: #0048FF;
+            --secondary-color: #1f914f;
+            --danger-color: #e74c3c;
+            --background-color: #f5f6fa;
+            --text-color: #34495e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: var(--primary-color-light);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result-item {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .result-item h2 {
+            color: #000;
+            font-size: 1em;
+        }
+
+        .result-item.work-hours {
+            grid-column: 1 / -1;
+            background-color: #ecf0f1;
+        }
+
+        .result-item.work-hours h2 {
+            color: var(--primary-color);
+            font-size: 1.5em;
+        }
+
+        .result-item.work-hours span {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color-light);
+            color: #fff;
+        }
+
+        .remove-btn {
+            background-color: var(--danger-color);
+            padding: 5px 10px;
+        }
+
+        .reset-btn {
+            background-color: var(--secondary-color);
+            margin-top: 10px;
+        }
+
+        #calculate-btn {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            input[type="time"] {
+                font-size: 16px;
+            }
+
+            .results {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>연세대 전문연 유연근무 시간계산기</h1>
-    <form id="timeForm">
-        <label for="startTime">출근시간 (e.g., 6:00 AM):</label>
-        <input type="time" id="startTime" required min="06:00" max="23:59">
-        <br><br>
-        <label for="endTime">퇴근시간 (e.g., 8:00 PM):</label>
-        <input type="time" id="endTime" required min="06:01" max="24:00">
-        <br><br>
-        <button type="button" onclick="calculateWorkHours()" accesskey="enter">Calculate</button>
-    </form>
-    <h2>시간합계: <span id="totalOnHours">0시간 0분</span></h2>
-    <h2>근무시간: <span id="workHours">0시간 0분</span></h2>
-    <h2>휴식시간: <span id="breakHours">0시간 0분</span></h2>
-    <h2>초과근무: <span id="overHours">0시간 0분</span></h2>
+    <div class="container">
+        <h1>연세대 전문연 유연근무 시간계산기</h1>
+        <form id="timeForm">
+            <div class="form-group">
+                <label for="startTime">출근시간:</label>
+                <input type="time" id="startTime" required min="06:00" max="23:59">
+            </div>
+            <div class="form-group">
+                <label for="endTime">퇴근시간:</label>
+                <input type="time" id="endTime" required min="06:01" max="24:00">
+            </div>
+        </form>
+        <button type="button" onclick="calculateWorkHours()" accesskey="enter" id="calculate-btn">계산하기</button>
+
+        <div class="results">
+            <div class="result-item">
+                <h2>시간합계</h2>
+                <span id="totalOnHours">0시간 0분</span>
+            </div>
+            <div class="result-item">
+                <h2>휴식시간</h2>
+                <span id="breakHours">0시간 0분</span>
+            </div>
+            <div class="result-item">
+                <h2>초과근무</h2>
+                <span id="overHours">0시간 0분</span>
+            </div>
+            <div class="result-item work-hours">
+                <h2>근무시간</h2>
+                <span id="workHours">0시간 0분</span>
+            </div>
+        </div>
+
+        <button type="button" onclick="addShiftToTable()" id="addShiftButton" disabled>근무 추가하기</button>
+
+        <table id="shiftTable">
+            <thead>
+                <tr>
+                    <th>시작 시간</th>
+                    <th>종료 시간</th>
+                    <th>근무 시간</th>
+                    <th>작업</th>
+                </tr>
+            </thead>
+            <tbody id="shiftTableBody">
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td id="totalWorkHours">0시간 0분</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <button type="button" class="reset-btn" onclick="resetTable()">테이블 초기화</button>
+    </div>
 
     <script>
-        
         // Set the input of endtime to now
         const now = new Date();
         const nowHour = now.getHours();
@@ -108,11 +314,67 @@
             // Update the UI
             document.getElementById("totalOnHours").textContent = `${Math.floor((totalMinutes / 60))} 시간 ${((totalMinutes % 60))} 분`;
             document.getElementById("workHours").textContent = `${Math.floor((workMinutes / 60))} 시간 ${((workMinutes % 60))} 분`;
-            document.getElementById("breakHours").textContent = `${Math.floor((breakMinutes / 60))} 시간 ${((breakMinutes % 60))} 분`;
-            document.getElementById("overHours").textContent = `${Math.floor((overMinutes / 60))} 시간 ${((overMinutes % 60))} 분`;
+
+            // Enable the "Add Shift to Table" button
+            document.getElementById("addShiftButton").disabled = false;
         }
 
+        function addShiftToTable() {
+            const startTime = document.getElementById("startTime").value;
+            const endTime = document.getElementById("endTime").value;
+            const workHours = document.getElementById("workHours").textContent;
 
+            const tableBody = document.getElementById("shiftTableBody");
+            const newRow = tableBody.insertRow();
+
+            newRow.insertCell().textContent = startTime;
+            newRow.insertCell().textContent = endTime;
+            newRow.insertCell().textContent = workHours;
+
+            const actionCell = newRow.insertCell();
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.className = "remove-btn";
+            removeButton.onclick = function() {
+                tableBody.removeChild(newRow);
+                calculateTotalHours();
+            };
+            actionCell.appendChild(removeButton);
+
+            calculateTotalHours();
+
+            // Disable the "Add Shift to Table" button after adding a shift
+            document.getElementById("addShiftButton").disabled = true;
+        }
+
+        function resetTable() {
+            const tableBody = document.getElementById("shiftTableBody");
+            tableBody.innerHTML = "";
+            calculateTotalHours();
+        }
+        
+
+        function calculateTotalHours() {
+            const tableBody = document.getElementById("shiftTableBody");
+            let totalWork = 0;
+
+            for (let row of tableBody.rows) {
+                totalWork += parseHoursToMinutes(row.cells[2].textContent);
+            }
+
+            document.getElementById("totalWorkHours").textContent = formatMinutesToHours(totalWork);
+        }
+
+        function parseHoursToMinutes(timeString) {
+            const [hours, minutes] = timeString.split('시간 ');
+            return parseInt(hours) * 60 + parseInt(minutes);
+        }
+
+        function formatMinutesToHours(minutes) {
+            const hours = Math.floor(minutes / 60);
+            const remainingMinutes = minutes % 60;
+            return `${hours}시간 ${remainingMinutes}분`;
+        }
     </script>
 </body>
 </html>
