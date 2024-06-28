@@ -129,8 +129,9 @@
         }
 
         th {
-            background-color: var(--primary-color-light);
-            color: #fff;
+            background-color: #e6eeff; /* Light blue background following the primary color theme */
+            color: var(--primary-color); /* Use primary color for text */
+            font-weight: bold;
         }
 
         .remove-btn {
@@ -319,6 +320,43 @@
             document.getElementById("addShiftButton").disabled = false;
         }
 
+        function saveToLocalStorage() {
+            const shifts = [];
+            const tableBody = document.getElementById("shiftTableBody");
+            for (let row of tableBody.rows) {
+                shifts.push({
+                    startTime: row.cells[0].textContent,
+                    endTime: row.cells[1].textContent,
+                    workHours: row.cells[2].textContent
+                });
+            }
+            localStorage.setItem('shifts', JSON.stringify(shifts));
+        }
+
+        function loadFromLocalStorage() {
+            const shifts = JSON.parse(localStorage.getItem('shifts')) || [];
+            const tableBody = document.getElementById("shiftTableBody");
+            shifts.forEach(shift => {
+                const newRow = tableBody.insertRow();
+                newRow.insertCell().textContent = shift.startTime;
+                newRow.insertCell().textContent = shift.endTime;
+                newRow.insertCell().textContent = shift.workHours;
+
+                const actionCell = newRow.insertCell();
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove";
+                removeButton.className = "remove-btn";
+                removeButton.onclick = function() {
+                    tableBody.removeChild(newRow);
+                    calculateTotalHours();
+                    saveToLocalStorage();
+                };
+                actionCell.appendChild(removeButton);
+            });
+            calculateTotalHours();
+        }
+
+        // Modify addShiftToTable function to save to localStorage
         function addShiftToTable() {
             const startTime = document.getElementById("startTime").value;
             const endTime = document.getElementById("endTime").value;
@@ -342,16 +380,22 @@
             actionCell.appendChild(removeButton);
 
             calculateTotalHours();
+            saveToLocalStorage();
 
             // Disable the "Add Shift to Table" button after adding a shift
             document.getElementById("addShiftButton").disabled = true;
         }
 
+        // Modify resetTable function to clear localStorage
         function resetTable() {
             const tableBody = document.getElementById("shiftTableBody");
             tableBody.innerHTML = "";
             calculateTotalHours();
+            localStorage.removeItem('shifts');
         }
+
+        // Load saved shifts when the page loads
+        window.onload = loadFromLocalStorage;
         
 
         function calculateTotalHours() {
