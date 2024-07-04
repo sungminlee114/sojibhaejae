@@ -88,6 +88,8 @@ function calculateWorkHours() {
     // Update the UI
     document.getElementById("totalOnHours").textContent = `${Math.floor((totalMinutes / 60))} 시간 ${((totalMinutes % 60))} 분`;
     document.getElementById("workHours").textContent = `${Math.floor((workMinutes / 60))} 시간 ${((workMinutes % 60))} 분`;
+    document.getElementById("breakHours").textContent = `${Math.floor((breakMinutes / 60))} 시간 ${((breakMinutes % 60))} 분`;
+    document.getElementById("overHours").textContent = `${Math.floor((overMinutes / 60))} 시간 ${((overMinutes % 60))} 분`;
 
     // Enable the "Add Shift to Table" button
     document.getElementById("addShiftButton").disabled = false;
