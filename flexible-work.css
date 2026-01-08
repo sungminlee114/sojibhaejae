@@ -1,0 +1,506 @@
+/* Page-specific styles for flexible work converter */
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin: 0;
+    font-size: 28px;
+    flex: 1;
+}
+
+.description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.upload-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.drop-zone {
+    position: relative;
+    width: 100%;
+    min-height: 120px;
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drop-zone:hover {
+    border-color: var(--primary-color-light);
+    background: #f8f9fa;
+}
+
+.drop-zone.drag-over {
+    border-color: var(--secondary-color);
+    background: #e8f5e9;
+}
+
+.drop-zone input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.drop-zone-text {
+    text-align: center;
+    pointer-events: none;
+}
+
+.drop-zone-text p {
+    margin: 5px 0;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.drop-zone-hint {
+    font-size: 12px;
+    color: #999;
+    font-weight: normal !important;
+}
+
+.file-info {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+}
+
+.file-info span {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+#fileStatus {
+    color: #666;
+    font-weight: normal;
+    font-size: 13px;
+}
+
+#fileStatus.warning {
+    color: #ff9800;
+}
+
+#fileStatus.error {
+    color: var(--danger-color);
+}
+
+.filter-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section .form-group {
+    margin-bottom: 0;
+}
+
+.filter-section button {
+    grid-column: 1 / -1;
+    margin-top: 5px;
+}
+
+.filter-section select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.filter-section select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.filter-section select:disabled option {
+    color: #ccc;
+}
+
+.calendar-section {
+    margin-top: 30px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-section h2 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.calendar-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: var(--primary-color-light);
+    transform: scale(1.1);
+}
+
+.pagination-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.pagination-info {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 60px;
+    text-align: center;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.empty-state p {
+    color: #999;
+    font-size: 15px;
+    margin: 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.mini-calendar {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.mini-calendar.selected {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 44, 158, 0.15);
+    border: 2px solid var(--primary-color);
+}
+
+.mini-calendar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.mini-calendar-header span {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--primary-color);
+    white-space: nowrap;
+    text-align: center;
+}
+
+.select-month-btn {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0;
+    white-space: nowrap;
+    width: auto;
+}
+
+.select-month-btn:hover {
+    background: var(--primary-color-light);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 44, 158, 0.3);
+}
+
+.mini-calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+}
+
+.mini-calendar-weekdays div {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #999;
+    padding: 3px 0;
+}
+
+.mini-calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.mini-calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #bbb;
+    border-radius: 3px;
+    transition: all 0.2s;
+    background: white;
+}
+
+.mini-calendar-day.empty {
+    background: transparent;
+}
+
+.mini-calendar-day.has-data {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 44, 158, 0.3);
+}
+
+.mini-calendar-day.has-data:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 44, 158, 0.5);
+}
+
+.mini-calendar.selected .mini-calendar-day.has-data {
+    background: var(--secondary-color);
+}
+
+.preview-section {
+    margin-top: 30px;
+}
+
+.summary {
+    background: #e8f4f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.summary p {
+    color: #333;
+    font-size: 16px;
+}
+
+.summary span {
+    font-weight: bold;
+    color: #667eea;
+    font-size: 18px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+#downloadBtn {
+    background-color: var(--secondary-color);
+}
+
+#downloadBtn:hover:not(:disabled) {
+    background-color: #26a65b;
+}
+
+#printBtn {
+    background-color: #667eea;
+}
+
+#printBtn:hover:not(:disabled) {
+    background-color: #5568d3;
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    body {
+        background: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 10px;
+        box-shadow: none;
+        margin: 0;
+    }
+
+    h1,
+    .description,
+    .upload-section,
+    .calendar-section,
+    .back-link,
+    .back-link-btn,
+    .action-buttons,
+    .summary,
+    .preview-section h2,
+    .header-with-link {
+        display: none !important;
+    }
+
+    .preview-section {
+        display: block !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    .table-container {
+        box-shadow: none;
+        overflow: visible;
+        margin: 0;
+    }
+
+    .print-info {
+        margin-bottom: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        page-break-inside: auto;
+        font-size: 10px;
+    }
+
+    thead {
+        background-color: #333 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    th {
+        padding: 5px 3px;
+        font-size: 11px;
+        border: 1px solid #000;
+        text-align: center;
+    }
+
+    tbody tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    td {
+        padding: 4px 2px;
+        font-size: 11px;
+        border: 1px solid #666;
+        color: black;
+    }
+
+    /* rowspan이 적용된 셀 스타일 (주간, 주간총근무시간) */
+    td[rowspan] {
+        vertical-align: middle;
+        text-align: center;
+        font-weight: 600;
+        font-size: 11px;
+        background-color: #e0e0e0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .mini-calendar {
+        padding: 10px;
+    }
+
+    .mini-calendar-header span {
+        font-size: 12px;
+    }
+
+    .select-month-btn {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+    .filter-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+}

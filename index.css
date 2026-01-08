@@ -1,25 +1,4 @@
-:root {
-    --primary-color: #002C9E;
-    --primary-color-light: #0048FF;
-    --secondary-color: #1f914f;
-    --danger-color: #e74c3c;
-    --background-color: #f5f6fa;
-    --text-color: #34495e;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    padding: 20px;
-}
+/* Page-specific styles for time calculator */
 
 .button-container {
     position: relative;
@@ -59,17 +38,8 @@ button:disabled:hover + .tooltip {
     opacity: 1;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-h1, h2 {
-    margin-bottom: 20px;
+h1 {
+    text-align: center;
     color: var(--primary-color);
 }
 
@@ -127,6 +97,7 @@ button:disabled {
     padding: 15px;
     border-radius: 5px;
 }
+
 .result-item h2 {
     color: #000;
     font-size: 1em;
@@ -160,8 +131,8 @@ th, td {
 }
 
 th {
-    background-color: #e6eeff; /* Light blue background following the primary color theme */
-    color: var(--primary-color); /* Use primary color for text */
+    background-color: #e6eeff;
+    color: var(--primary-color);
     font-weight: bold;
 }
 
@@ -180,10 +151,6 @@ th {
 }
 
 @media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-
     form {
         flex-direction: column;
     }
